@@ -8,11 +8,28 @@ public class TaskServiceRepo {
         this.repo = new ArrayList<Task>();
     }
 
+    private int validateIndex(int index) {
+        if (index <= 0 || index > repo.size()) {
+            throw new IndexOutOfBoundsException();
+        }
+        return index - 1;
+    }
+
     public void add(Task task) {
         repo.add(task);
     }
 
     public ArrayList<Task> fetchAll() {
         return new ArrayList<Task>(repo);
+    }
+
+    public void mark(int index, boolean status) {
+        index = validateIndex(index);
+        repo.get(index).markDone(status);
+    }
+
+    public Task fetchTask(int index) {
+        index = validateIndex(index);
+        return repo.get(index);
     }
 }

@@ -26,13 +26,43 @@ class Cli {
                 break;
 
             case "list":
-                List<String> tasks = service.listTasks(repo);
+                List<Task> tasks = service.listTasks(repo);
                 int count = 1;
-                for (String taskName: tasks) {
-                    System.out.print(count);
-                    System.out.print(". ");
-                    System.out.println(taskName);
+                for (Task task: tasks) {
+                    System.out.println(count + ". [" + (task.getDone() ? "X" : "") + "] " + task.getDesc());
                     count += 1;
+                }
+                break;
+
+            case "mark":
+                if (cmd.length <= 1) {
+                    System.out.println("No task index specified!");
+                } else {
+                    int index = Integer.parseInt(cmd[1]);
+                    try {
+                        service.completeTask(repo, index);
+                        String task = service.fetchTask(repo, index);
+                        System.out.println("I've marked the following task as done: " + task);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid index: " + index);
+                        continue;
+                    }
+                }
+                break;
+
+            case "unmark":
+                if (cmd.length <= 1) {
+                    System.out.println("No task index specified!");
+                } else {
+                    int index = Integer.parseInt(cmd[1]);
+                    try {
+                        service.uncompleteTask(repo, index);
+                        String task = service.fetchTask(repo, index);
+                        System.out.println("I've unmarked the following task as done: " + task);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid index: " + index);
+                        continue;
+                    }
                 }
                 break;
 

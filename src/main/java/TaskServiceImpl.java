@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskServiceImpl implements TaskService{
@@ -8,9 +7,23 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public List<String> listTasks(TaskServiceRepo repo) {
-        ArrayList<Task> tasks = repo.fetchAll();
-        List<String> result = tasks.stream().map(Task::getDesc).toList();
-        return result;
+    public List<Task> listTasks(TaskServiceRepo repo) {
+        List<Task> tasks = repo.fetchAll().stream().toList();
+        return tasks;
+    }
+
+    @Override
+    public void completeTask(TaskServiceRepo repo, int index) {
+        repo.mark(index, true);
+    }
+
+    @Override
+    public void uncompleteTask(TaskServiceRepo repo, int index) {
+        repo.mark(index, false);
+    }
+
+    @Override
+    public String fetchTask(TaskServiceRepo repo, int index) {
+        return repo.fetchTask(index).getDesc();
     }
 }
