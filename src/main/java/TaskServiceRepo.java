@@ -25,11 +25,15 @@ public class TaskServiceRepo {
 
     public void mark(int index, boolean status) {
         index = validateIndex(index);
-        repo.get(index).markDone(status);
+        repo.get(index).setDone(status);
     }
 
     public Task fetchTask(int index) {
         index = validateIndex(index);
         return repo.get(index);
+    }
+
+    public int getLength() {
+        return repo.size();
     }
 }

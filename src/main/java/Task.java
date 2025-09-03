@@ -11,11 +11,16 @@ public class Task {
         return this.desc;
     }
 
-    public void markDone(boolean status) {
+    public void setDone(boolean status) {
         done = status;
     }
 
     public boolean getDone() {
         return done;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + (getDone() ? "X" : " ") + "] " + getDesc();
     }
 }
