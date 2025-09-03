@@ -87,6 +87,10 @@ class Cli {
 
             case "list":
                 List<Task> tasks = service.listTasks(repo);
+                if (tasks.isEmpty()) {
+                    System.out.println("You currently have no tasks!");
+                    break;
+                }
                 int count = 1;
                 for (Task task: tasks) {
                     System.out.println(count + "." + task);
