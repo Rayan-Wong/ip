@@ -24,6 +24,10 @@ class Cli {
         return index;
     }
 
+    public static String join(String[] cmd, int startInclusive, int endExclusive) {
+        return Arrays.stream(cmd, startInclusive, endExclusive).collect(Collectors.joining(" "));
+    }
+
     public static void getCommand(TaskServiceRepo repo, TaskService service) {
         Scanner sc = new Scanner(System.in);
         // Continuously loop CLI until "bye" command is entered
@@ -36,7 +40,7 @@ class Cli {
 
             case "todo":
                 if (checkCommand(cmd)) {
-                    String todo_name = Arrays.stream(cmd, 1, cmd.length).collect(Collectors.joining(" "));
+                    String todo_name = join(cmd, 1, cmd.length);
                     ToDo todo = new ToDo(todo_name);
                     service.addTask(repo, todo);
                     printSuccess(todo, repo);
@@ -46,12 +50,12 @@ class Cli {
             case "deadline":
                 if (checkCommand(cmd)) {
                     int byIndex = indexFinder(cmd, "/by");
-                    if (byIndex == -1) {
+                    if (byIndex == -1 || cmd.length - byIndex == 1) {
                         System.out.println("Please specify a deadline!");
                         break;
                     }
-                    String deadline_name = Arrays.stream(cmd, 1, byIndex).collect(Collectors.joining(" "));
-                    String due_date = Arrays.stream(cmd, byIndex + 1, cmd.length).collect(Collectors.joining(" "));
+                    String deadline_name = join(cmd, 1, byIndex);
+                    String due_date = join(cmd, byIndex + 1, cmd.length);
                     Deadline deadline = new Deadline(deadline_name, due_date);
                     service.addTask(repo, deadline);
                     printSuccess(deadline, repo);
@@ -62,18 +66,18 @@ class Cli {
             case "event":
                 if (checkCommand(cmd)) {
                     int fromIndex = indexFinder(cmd, "/from");
-                    if (fromIndex == -1) {
+                    int toIndex = indexFinder(cmd, "/to");
+                    if (fromIndex == -1 || toIndex - fromIndex == 1) {
                         System.out.println("Please specify a start date");
                         break;
                     }
-                    int toIndex = indexFinder(cmd, "/to");
-                    if (toIndex == -1) {
+                    if (toIndex == -1 || cmd.length - toIndex == 1) {
                         System.out.println("Please specify an end date");
                         break;
                     }
-                    String event_name = Arrays.stream(cmd, 1, fromIndex).collect(Collectors.joining(" "));
-                    String from = Arrays.stream(cmd, fromIndex + 1, toIndex).collect(Collectors.joining(" "));
-                    String to = Arrays.stream(cmd, toIndex + 1, cmd.length).collect(Collectors.joining(" "));
+                    String event_name = join(cmd, 1, fromIndex);
+                    String from = join(cmd, fromIndex + 1, toIndex);
+                    String to = join(cmd, toIndex + 1, cmd.length);
                     Event event = new Event(event_name, from, to);
                     service.addTask(repo, event);
                     printSuccess(event, repo);
