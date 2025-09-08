@@ -60,7 +60,7 @@ public class Cli {
                 if (checkCommand(cmd)) {
                     int byIndex = indexFinder(cmd, "/by");
                     if (byIndex == -1 || cmd.length - byIndex == 1) {
-                        System.out.println("Please specify a deadline!");
+                        System.out.println("Please specify a deadline with /by <deadline>!");
                         break;
                     }
                     String deadline_name = join(cmd, 1, byIndex);
@@ -77,11 +77,11 @@ public class Cli {
                     int fromIndex = indexFinder(cmd, "/from");
                     int toIndex = indexFinder(cmd, "/to");
                     if (fromIndex == -1 || toIndex - fromIndex == 1) {
-                        System.out.println("Please specify a start date");
+                        System.out.println("Please specify a start date with /from <start_date>!");
                         break;
                     }
                     if (toIndex == -1 || cmd.length - toIndex == 1) {
-                        System.out.println("Please specify an end date");
+                        System.out.println("Please specify an end date with /to <end_date>!");
                         break;
                     }
                     String event_name = join(cmd, 1, fromIndex);
