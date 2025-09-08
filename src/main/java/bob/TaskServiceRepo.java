@@ -1,3 +1,5 @@
+package bob;
+
 import java.util.ArrayList;
 
 // Class acts as a "dumb" repo: processing is done at service
