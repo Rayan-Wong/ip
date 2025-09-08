@@ -1,3 +1,8 @@
+package bob.service;
+
+import bob.repository.TaskServiceRepo;
+import bob.models.Task;
+
 import java.util.List;
 
 public interface TaskService {

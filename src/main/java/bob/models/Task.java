@@ -1,3 +1,5 @@
+package bob.models;
+
 public class Task {
     private final String desc;
     private boolean done;
