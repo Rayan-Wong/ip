@@ -1,4 +1,4 @@
-package bob;
+package bob.models;
 
 public class Task {
     private final String desc;

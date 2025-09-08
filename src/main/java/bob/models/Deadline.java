@@ -1,4 +1,4 @@
-package bob;
+package bob.models;
 
 public class Deadline extends Task {
     String deadline;

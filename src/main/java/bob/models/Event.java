@@ -1,4 +1,4 @@
-package bob;
+package bob.models;
 
 public class Event extends Task {
     String from;

@@ -1,4 +1,4 @@
-package bob;
+package bob.models;
 
 public class ToDo extends Task {
     public ToDo(String desc) {

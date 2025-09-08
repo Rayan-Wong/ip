@@ -1,11 +1,18 @@
-package bob;
+package bob.adapter;
+
+import bob.repository.TaskServiceRepo;
+import bob.models.Deadline;
+import bob.models.Event;
+import bob.models.Task;
+import bob.models.ToDo;
+import bob.service.TaskService;
 
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.List;
 
-class Cli {
+public class Cli {
     public static void printSuccess(Task task, TaskServiceRepo repo) {
         int length = repo.getLength();
         System.out.println("Got it. I've added this task:");

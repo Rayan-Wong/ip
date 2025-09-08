@@ -1,5 +1,10 @@
 package bob;
 
+import bob.adapter.Cli;
+import bob.repository.TaskServiceRepo;
+import bob.service.TaskService;
+import bob.service.TaskServiceImpl;
+
 public class Bob {
     public static void main(String[] args) {
         System.out.println("Hello! I'm Bob");

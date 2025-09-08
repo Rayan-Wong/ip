@@ -1,8 +1,10 @@
-package bob;
+package bob.repository;
+
+import bob.models.Task;
 
 import java.util.ArrayList;
 
-// Class acts as a "dumb" repo: processing is done at service
+// Class acts as a "dumb" repo: processing is done at Service
 public class TaskServiceRepo {
     private final ArrayList<Task> repo;
 
