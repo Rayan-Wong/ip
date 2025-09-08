@@ -1,5 +1,6 @@
 package bob.service;
 
+import bob.exceptions.BadIndexException;
 import bob.repository.TaskServiceRepo;
 import bob.models.Task;
 
@@ -18,17 +19,17 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public void completeTask(TaskServiceRepo repo, int index) {
+    public void completeTask(TaskServiceRepo repo, int index) throws BadIndexException {
         repo.mark(index, true);
     }
 
     @Override
-    public void uncompleteTask(TaskServiceRepo repo, int index) {
+    public void uncompleteTask(TaskServiceRepo repo, int index) throws BadIndexException {
         repo.mark(index, false);
     }
 
     @Override
-    public String fetchTask(TaskServiceRepo repo, int index) {
+    public String fetchTask(TaskServiceRepo repo, int index) throws BadIndexException {
         return repo.fetchTask(index).getDesc();
     }
 }

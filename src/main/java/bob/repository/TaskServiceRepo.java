@@ -1,5 +1,6 @@
 package bob.repository;
 
+import bob.exceptions.BadIndexException;
 import bob.models.Task;
 
 import java.util.ArrayList;
@@ -12,9 +13,10 @@ public class TaskServiceRepo {
         this.repo = new ArrayList<Task>();
     }
 
-    private int validateIndex(int index) {
+    private int validateIndex(int index) throws BadIndexException {
         if (index <= 0 || index > repo.size()) {
-            throw new IndexOutOfBoundsException();
+            // rationale: Let the adapter layer print the message to see
+            throw new BadIndexException("Invalid index: " + index);
         }
         return index - 1;
     }
@@ -27,12 +29,12 @@ public class TaskServiceRepo {
         return new ArrayList<Task>(repo);
     }
 
-    public void mark(int index, boolean status) {
+    public void mark(int index, boolean status) throws BadIndexException {
         index = validateIndex(index);
         repo.get(index).setDone(status);
     }
 
-    public Task fetchTask(int index) {
+    public Task fetchTask(int index) throws BadIndexException {
         index = validateIndex(index);
         return repo.get(index);
     }
