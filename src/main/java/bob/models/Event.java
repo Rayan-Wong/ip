@@ -15,6 +15,14 @@ public class Event extends Task {
         return super.getDesc() + " (from: " + from + " to: " + to + ")";
     }
 
+    public String getFrom() {
+        return from;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
     @Override
     public String toString() {
         return "[E]" + super.toString();

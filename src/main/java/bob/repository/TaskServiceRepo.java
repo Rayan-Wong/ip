@@ -1,16 +1,26 @@
 package bob.repository;
 
+import bob.exceptions.BadFileException;
 import bob.exceptions.BadIndexException;
+import bob.file.FileHelper;
+import bob.file.FileHelperImpl;
 import bob.models.Task;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 // Class acts as a "dumb" repo: processing is done at Service
 public class TaskServiceRepo {
     private final ArrayList<Task> repo;
+    private final FileHelper fh;
 
-    public TaskServiceRepo() {
-        this.repo = new ArrayList<Task>();
+    public TaskServiceRepo() throws BadFileException {
+        try {
+            fh = new FileHelperImpl();
+            repo = fh.load();
+        } catch (IOException e) {
+            throw new BadFileException(e.getMessage());
+        }
     }
 
     private int validateIndex(int index) throws BadIndexException {
@@ -21,17 +31,27 @@ public class TaskServiceRepo {
         return index - 1;
     }
 
-    public void add(Task task) {
-        repo.add(task);
+    public void add(Task task) throws BadFileException {
+        try {
+            repo.add(task);
+            fh.save(repo);
+        } catch (IOException e) {
+            throw new BadFileException(e.getMessage());
+        }
     }
 
     public ArrayList<Task> fetchAll() {
         return new ArrayList<Task>(repo);
     }
 
-    public void mark(int index, boolean status) throws BadIndexException {
-        index = validateIndex(index);
-        repo.get(index).setDone(status);
+    public void mark(int index, boolean status) throws BadIndexException, BadFileException {
+        try {
+            index = validateIndex(index);
+            repo.get(index).setDone(status);
+            fh.save(repo);
+        } catch (IOException e) {
+            throw new BadFileException(e.getMessage());
+        }
     }
 
     public Task fetch(int index) throws BadIndexException {
@@ -39,9 +59,14 @@ public class TaskServiceRepo {
         return repo.get(index);
     }
 
-    public void remove(int index) throws BadIndexException {
-        index = validateIndex(index);
-        repo.remove(index);
+    public void remove(int index) throws BadIndexException, BadFileException {
+        try {
+            index = validateIndex(index);
+            repo.remove(index);
+            fh.save(repo);
+        } catch (IOException e) {
+            throw new BadFileException(e.getMessage());
+        }
     }
 
     public int getLength() {
