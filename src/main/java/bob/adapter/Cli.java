@@ -20,15 +20,24 @@ public class Cli {
     public static final String EVENT_SYNTAX = "event <event name> /from <from date> /to <to date>";
     public static final String MARK_SYNTAX = "mark <index>";
     public static final String UNMARK_SYNTAX = "unmark <index>";
+    public static final String DELETE_SYNTAX = "delete <index>";
 
     public static final String BY_DEADLINE = "Please specify a deadline with /by <deadline>!";
     public static final String START_EVENT = "Please specify a start date with /from <start date>!";
     public static final String END_EVENT = "Please specify an end date with /to <end_date>!";
 
-    public static void printSuccess(Task task, TaskServiceRepo repo) {
+    public static void printAddSuccess(Task task, TaskServiceRepo repo) {
         int length = repo.getLength();
 
         System.out.println("Got it. I've added this task:");
+        System.out.println(task);
+        System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
+    }
+
+    public static void printDeleteSuccess(Task task, TaskServiceRepo repo) {
+        int length = repo.getLength();
+
+        System.out.println("Got it. I've deleted this task:");
         System.out.println(task);
         System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
     }
@@ -69,7 +78,7 @@ public class Cli {
                     String todo_name = join(cmd, 1, cmd.length);
                     ToDo todo = new ToDo(todo_name);
                     service.addTask(repo, todo);
-                    printSuccess(todo, repo);
+                    printAddSuccess(todo, repo);
                 }
                 break;
 
@@ -83,7 +92,7 @@ public class Cli {
 
                         Deadline deadline = new Deadline(deadline_name, due_date);
                         service.addTask(repo, deadline);
-                        printSuccess(deadline, repo);
+                        printAddSuccess(deadline, repo);
                     } catch (BadArgumentException e) {
                         System.out.println(e.getMessage());
                     }
@@ -102,7 +111,7 @@ public class Cli {
                         Event event = new Event(event_name, from, to);
 
                         service.addTask(repo, event);
-                        printSuccess(event, repo);
+                        printAddSuccess(event, repo);
                     } catch (BadArgumentException e) {
                         System.out.println(e.getMessage());
                     }
@@ -127,8 +136,9 @@ public class Cli {
                     int index = Integer.parseInt(cmd[1]);
                     try {
                         service.completeTask(repo, index);
-                        String task = service.fetchTask(repo, index);
-                        System.out.println("I've marked the following task as done: " + task);
+                        Task task = service.fetchTask(repo, index);
+                        System.out.println("I've marked the following task as done:");
+                        System.out.println(task);
                     } catch (RepoException e) {
                         System.out.println(e.getMessage());
                     }
@@ -140,8 +150,22 @@ public class Cli {
                     int index = Integer.parseInt(cmd[1]);
                     try {
                         service.uncompleteTask(repo, index);
-                        String task = service.fetchTask(repo, index);
-                        System.out.println("I've unmarked the following task as done: " + task);
+                        Task task = service.fetchTask(repo, index);
+                        System.out.println("I've unmarked the following task as done:");
+                        System.out.println(task);
+                    } catch (RepoException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+                break;
+
+            case "delete":
+                if (checkCommand(cmd, DELETE_SYNTAX)) {
+                    int index = Integer.parseInt(cmd[1]);
+                    try {
+                        Task task = service.fetchTask(repo, index);
+                        service.deleteTask(repo, index);
+                        printDeleteSuccess(task, repo);
                     } catch (RepoException e) {
                         System.out.println(e.getMessage());
                     }

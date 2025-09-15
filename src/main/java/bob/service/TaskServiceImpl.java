@@ -29,7 +29,12 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public String fetchTask(TaskServiceRepo repo, int index) throws BadIndexException {
-        return repo.fetchTask(index).getDesc();
+    public Task fetchTask(TaskServiceRepo repo, int index) throws BadIndexException {
+        return repo.fetch(index);
+    }
+
+    @Override
+    public void deleteTask(TaskServiceRepo repo, int index) throws BadIndexException {
+        repo.remove(index);
     }
 }

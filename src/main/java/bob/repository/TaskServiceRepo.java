@@ -34,9 +34,14 @@ public class TaskServiceRepo {
         repo.get(index).setDone(status);
     }
 
-    public Task fetchTask(int index) throws BadIndexException {
+    public Task fetch(int index) throws BadIndexException {
         index = validateIndex(index);
         return repo.get(index);
+    }
+
+    public void remove(int index) throws BadIndexException {
+        index = validateIndex(index);
+        repo.remove(index);
     }
 
     public int getLength() {
