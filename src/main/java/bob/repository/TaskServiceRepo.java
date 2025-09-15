@@ -37,6 +37,11 @@ public class TaskServiceRepo {
         return repo.get(index);
     }
 
+    public void removeTask(int index) {
+        index = validateIndex(index);
+        repo.remove(index);
+    }
+
     public int getLength() {
         return repo.size();
     }

@@ -13,9 +13,16 @@ import java.util.stream.Collectors;
 import java.util.List;
 
 public class Cli {
-    public static void printSuccess(Task task, TaskServiceRepo repo) {
+    public static void printInsertSuccess(Task task, TaskServiceRepo repo) {
         int length = repo.getLength();
         System.out.println("Got it. I've added this task:");
+        System.out.println(task);
+        System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
+    }
+
+    public static void printDeleteSuccess(Task task, TaskServiceRepo repo) {
+        int length = repo.getLength();
+        System.out.println("Got it. I've removed this task:");
         System.out.println(task);
         System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
     }
@@ -52,7 +59,7 @@ public class Cli {
                     String todo_name = join(cmd, 1, cmd.length);
                     ToDo todo = new ToDo(todo_name);
                     service.addTask(repo, todo);
-                    printSuccess(todo, repo);
+                    printInsertSuccess(todo, repo);
                 }
                 break;
 
@@ -67,7 +74,7 @@ public class Cli {
                     String due_date = join(cmd, byIndex + 1, cmd.length);
                     Deadline deadline = new Deadline(deadline_name, due_date);
                     service.addTask(repo, deadline);
-                    printSuccess(deadline, repo);
+                    printInsertSuccess(deadline, repo);
                     break;
                 }
                 break;
@@ -89,7 +96,7 @@ public class Cli {
                     String to = join(cmd, toIndex + 1, cmd.length);
                     Event event = new Event(event_name, from, to);
                     service.addTask(repo, event);
-                    printSuccess(event, repo);
+                    printInsertSuccess(event, repo);
                     break;
                 }
                 break;
@@ -114,8 +121,9 @@ public class Cli {
                     int index = Integer.parseInt(cmd[1]);
                     try {
                         service.completeTask(repo, index);
-                        String task = service.fetchTask(repo, index);
-                        System.out.println("I've marked the following task as done: " + task);
+                        Task task = service.fetchTask(repo, index);
+                        System.out.println("I've marked the following task as done:");
+                        System.out.println(task);
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("Invalid index: " + index);
                         continue;
@@ -130,8 +138,25 @@ public class Cli {
                     int index = Integer.parseInt(cmd[1]);
                     try {
                         service.uncompleteTask(repo, index);
-                        String task = service.fetchTask(repo, index);
-                        System.out.println("I've unmarked the following task as done: " + task);
+                        Task task = service.fetchTask(repo, index);
+                        System.out.println("I've unmarked the following task as done:");
+                        System.out.println(task);
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid index: " + index);
+                        continue;
+                    }
+                }
+                break;
+
+            case "delete":
+                if (cmd.length <= 1) {
+                    System.out.println("No task index specified!");
+                } else {
+                    int index = Integer.parseInt(cmd[1]);
+                    try {
+                        Task task = service.fetchTask(repo, index);
+                        service.deleteTask(repo, index);
+                        printDeleteSuccess(task, repo);
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("Invalid index: " + index);
                         continue;

@@ -10,5 +10,6 @@ public interface TaskService {
     List<Task> listTasks(TaskServiceRepo repo);
     void completeTask(TaskServiceRepo repo, int index);
     void uncompleteTask(TaskServiceRepo repo, int index);
-    String fetchTask(TaskServiceRepo repo, int index);
+    Task fetchTask(TaskServiceRepo repo, int index);
+    void deleteTask(TaskServiceRepo repo, int index);
 }

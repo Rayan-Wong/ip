@@ -18,5 +18,14 @@ No task name specified!
 Please specify a deadline!
 Please specify a start date
 Please specify an end date
+I've marked the following task as done:
+[T][X] borrow book
+Invalid index: 4
+I've unmarked the following task as done:
+[T][ ] borrow book
+Got it. I've removed this task:
+[T][ ] borrow book
+Now you have 2 tasks in the list.
+Invalid index: 3
 Sorry, please type a valid input!
 Bye. Hope to see you again soon!

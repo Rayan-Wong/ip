@@ -8,5 +8,10 @@ todo
 deadline return book
 event project meeting
 event project meeting /from Mon 2pm
+mark 1
+mark 4
+unmark 1
+delete 1
+delete 3
 blah
 bye
