@@ -39,6 +39,11 @@ public class TaskServiceRepo {
         return repo.get(index);
     }
 
+    public void removeTask(int index) throws BadIndexException {
+        index = validateIndex(index);
+        repo.remove(index);
+    }
+
     public int getLength() {
         return repo.size();
     }

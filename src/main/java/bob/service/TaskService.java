@@ -11,5 +11,6 @@ public interface TaskService {
     List<Task> listTasks(TaskServiceRepo repo);
     void completeTask(TaskServiceRepo repo, int index) throws RepoException;
     void uncompleteTask(TaskServiceRepo repo, int index) throws RepoException;
-    String fetchTask(TaskServiceRepo repo, int index) throws RepoException;
+    Task fetchTask(TaskServiceRepo repo, int index) throws RepoException;
+    void deleteTask(TaskServiceRepo repo, int index) throws RepoException;
 }
