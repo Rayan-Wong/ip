@@ -13,6 +13,11 @@ public class Task {
         return this.desc;
     }
 
+    // todo: refactor this
+    public final String getRawDesc() {
+        return this.desc;
+    }
+
     public void setDone(boolean status) {
         done = status;
     }
