@@ -66,10 +66,14 @@ public class Cli {
 
             case "todo":
                 if (checkCommand(cmd, TODO_SYNTAX)) {
-                    String todo_name = join(cmd, 1, cmd.length);
-                    ToDo todo = new ToDo(todo_name);
-                    service.addTask(repo, todo);
-                    printSuccess(todo, repo);
+                    try {
+                        String todo_name = join(cmd, 1, cmd.length);
+                        ToDo todo = new ToDo(todo_name);
+                        service.addTask(repo, todo);
+                        printSuccess(todo, repo);
+                    } catch (RepoException e) {
+                        System.out.println(e.getMessage());
+                    }
                 }
                 break;
 
@@ -85,6 +89,8 @@ public class Cli {
                         service.addTask(repo, deadline);
                         printSuccess(deadline, repo);
                     } catch (BadArgumentException e) {
+                        System.out.println(e.getMessage());
+                    } catch (RepoException e) {
                         System.out.println(e.getMessage());
                     }
                 }
@@ -104,6 +110,8 @@ public class Cli {
                         service.addTask(repo, event);
                         printSuccess(event, repo);
                     } catch (BadArgumentException e) {
+                        System.out.println(e.getMessage());
+                    } catch (RepoException e) {
                         System.out.println(e.getMessage());
                     }
                 }

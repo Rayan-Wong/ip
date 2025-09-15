@@ -7,7 +7,7 @@ import bob.models.Task;
 import java.util.List;
 
 public interface TaskService {
-    void addTask(TaskServiceRepo repo, Task task);
+    void addTask(TaskServiceRepo repo, Task task) throws RepoException;
     List<Task> listTasks(TaskServiceRepo repo);
     void completeTask(TaskServiceRepo repo, int index) throws RepoException;
     void uncompleteTask(TaskServiceRepo repo, int index) throws RepoException;

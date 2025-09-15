@@ -1,17 +1,22 @@
 package bob;
 
 import bob.adapter.Cli;
+import bob.exceptions.RepoException;
 import bob.repository.TaskServiceRepo;
 import bob.service.TaskService;
 import bob.service.TaskServiceImpl;
 
 public class Bob {
     public static void main(String[] args) {
-        System.out.println("Hello! I'm Bob");
-        System.out.println("What can I do for you?");
-        TaskServiceRepo repo = new TaskServiceRepo();
-        TaskService service = new TaskServiceImpl();
-        Cli.getCommand(repo, service);
-        System.out.println("Bye. Hope to see you again soon!");
+        try {
+            System.out.println("Hello! I'm Bob");
+            System.out.println("What can I do for you?");
+            TaskServiceRepo repo = new TaskServiceRepo();
+            TaskService service = new TaskServiceImpl();
+            Cli.getCommand(repo, service);
+            System.out.println("Bye. Hope to see you again soon!");
+        } catch (RepoException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
     }
 }

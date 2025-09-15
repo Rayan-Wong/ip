@@ -13,6 +13,10 @@ public class Deadline extends Task {
         return super.getDesc() + " (by: " + deadline + ")";
     }
 
+    public String getDeadline() {
+        return deadline;
+    }
+
     @Override
     public String toString() {
         return "[D]" + super.toString();
