@@ -38,4 +38,9 @@ public class TaskServiceImpl implements TaskService{
     public void deleteTask(TaskServiceRepo repo, int index) throws BadIndexException, BadFileException {
         repo.remove(index);
     }
+
+    @Override
+    public void saveTasks(TaskServiceRepo repo) throws BadFileException {
+        repo.saveState();
+    }
 }
