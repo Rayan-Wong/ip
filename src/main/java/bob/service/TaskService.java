@@ -13,4 +13,5 @@ public interface TaskService {
     void uncompleteTask(TaskServiceRepo repo, int index) throws RepoException;
     Task fetchTask(TaskServiceRepo repo, int index) throws RepoException;
     void deleteTask(TaskServiceRepo repo, int index) throws RepoException;
+    void saveTasks(TaskServiceRepo repo) throws RepoException;
 }

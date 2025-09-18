@@ -41,7 +41,7 @@ public class TaskServiceRepo {
     }
 
     public ArrayList<Task> fetchAll() {
-        return new ArrayList<Task>(repo);
+        return new ArrayList<>(repo);
     }
 
     public void mark(int index, boolean status) throws BadIndexException, BadFileException {
@@ -71,5 +71,13 @@ public class TaskServiceRepo {
 
     public int getLength() {
         return repo.size();
+    }
+
+    public void saveState() throws BadFileException {
+        try {
+            fh.save(repo);
+        } catch (IOException e) {
+            throw new BadFileException((e.getMessage()));
+        }
     }
 }

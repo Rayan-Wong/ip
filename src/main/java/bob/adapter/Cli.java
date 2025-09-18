@@ -71,6 +71,11 @@ public class Cli {
             String[] cmd = sc.nextLine().replaceAll("\\s+", " ").split(" ");
             switch (cmd[0]) {
             case "bye":
+                try {
+                    service.saveTasks(repo);
+                } catch (RepoException e) {
+                    System.out.println(e.getMessage());
+                }
                 return;
 
             case "todo":
