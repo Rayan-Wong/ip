@@ -16,8 +16,8 @@ import java.util.Scanner;
 import static java.nio.file.Files.*;
 
 public class FileHelperImpl implements FileHelper {
-    private final Path FOLDER_DIR = Paths.get("/data");
-    private final Path FILE_DIR = Paths.get("/data/Bob.txt");
+    private final Path FOLDER_DIR = Paths.get("data");
+    private final Path FILE_DIR = Paths.get("data/Bob.txt");
     private final char DELIM = 0x1F; // for serialisation
     private FileWriter fw;
 
@@ -53,6 +53,7 @@ public class FileHelperImpl implements FileHelper {
             createDirectories(FOLDER_DIR);
             if (exists(FILE_DIR)) {
                 result = deserialise();
+                System.out.print("Found your sava data and loaded it!");
             } else {
                 // Rationale for printing it at repo layer: strictly speaking this log should be seen by devs
                 // i.e.: in logs, so we print to represent that
