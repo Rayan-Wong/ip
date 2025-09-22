@@ -6,6 +6,9 @@ import bob.repository.TaskServiceRepo;
 import bob.service.TaskService;
 import bob.service.TaskServiceImpl;
 
+/**
+ * This class is responsible for wiring up dependencies together and initialising them
+ */
 public class Bob {
     public static void main(String[] args) {
         try {

@@ -20,11 +20,16 @@ public class FileHelperImpl implements FileHelper {
     private final Path FILE_DIR = Paths.get("data/Bob.txt");
     private final char DELIM = 0x1F; // for serialisation
 
-    // Serialiser format: C_[Desc]_Time1_Time2
-    // where C is type of task, Desc is task description
-    // Time1 is first arg of time (eg: /from), Time2 is second arg of time (eg: /to)
-    // we use DELIM for delimiter
-
+    /**
+     * Serialiser format: C_[Desc]_Time1_Time2
+     * where C is type of task,
+     * Desc is task description,
+     * Time1 is first arg of time (eg: /from),
+     * Time2 is second arg of time (eg: /to).
+     * We use DELIM for delimiter
+     * @return the state deserialised
+     * @throws IOException if it could not parse (corrupted data.txt etc.)
+     */
     private ArrayList<Task> deserialise() throws IOException {
         ArrayList<Task> res = new ArrayList<>();
         Scanner sc = new Scanner(new File(FILE_DIR.toString()));
@@ -49,6 +54,11 @@ public class FileHelperImpl implements FileHelper {
         return res;
     }
 
+    /**
+     * Loads data from file, if it doesn't exist, create new empty file
+     * @return state obtained from file
+     * @throws IOException if it had issues parsing from deserialise(), making it create a new file
+     */
     public ArrayList<Task> load() throws IOException {
         ArrayList<Task> result;
         try {
@@ -70,6 +80,11 @@ public class FileHelperImpl implements FileHelper {
         return result;
     }
 
+    /**
+     * Saves state to file
+     * @param tasks the current state
+     * @throws IOException if it could not parse a task
+     */
     public void save(ArrayList<Task> tasks) throws IOException {
         try (FileWriter fw = new FileWriter(FILE_DIR.toString(), false)) {
             for (Task task: tasks) {

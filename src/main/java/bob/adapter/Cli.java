@@ -14,6 +14,9 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.List;
 
+/**
+ * This class is responsible for parsing user commands and then dispatching appropriate service methods
+ */
 public class Cli {
     public static final String TODO_SYNTAX = "todo <task name>";
     public static final String DEADLINE_SYNTAX = "deadline <deadline name> /by <deadline>";
@@ -27,6 +30,11 @@ public class Cli {
     public static final String START_EVENT = "Please specify a start date with /from <start date>!";
     public static final String END_EVENT = "Please specify an end date with /to <end_date>!";
 
+    /**
+     * Prints a successful task addition
+     * @param task the task (or its subclass)
+     * @param repo the repo storing it
+     */
     public static void printAddSuccess(Task task, TaskServiceRepo repo) {
         int length = repo.getLength();
 
@@ -35,6 +43,11 @@ public class Cli {
         System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
     }
 
+    /**
+     * Prints a successful task deletion
+     * @param task the task (or its subclass)
+     * @param repo the repo storing it
+     */
     public static void printDeleteSuccess(Task task, TaskServiceRepo repo) {
         int length = repo.getLength();
 
@@ -43,6 +56,14 @@ public class Cli {
         System.out.println("Now you have " + length + (length == 1 ? " task " : " tasks ") + "in the list.");
     }
 
+
+    /**
+     * Checks if there is at least one arg in the command
+     * Note that respective services must further check for their own constraints
+     * @param cmd the String array which is split by space character
+     * @param correctSyntax the correct syntax of the command
+     * @return whether the command is valid or not
+     */
     public static boolean checkCommand(String[] cmd, String correctSyntax) {
         if (cmd.length <= 1) {
             System.out.println("Invalid syntax!");
@@ -52,6 +73,15 @@ public class Cli {
         return true;
     }
 
+    /**
+     * Checks if the syntax part to be parsed is in the command
+     * @param cmd the String array which is split by space character
+     * @param target the syntax part being checked
+     * @param endIndex the ending index of the substring (exclusive)
+     * @param specifiedSyntax the correct syntax of the command
+     * @return the index where the command syntax is foumd
+     * @throws BadArgumentException if the syntax is invalid
+     */
     public static int indexFinder(String[] cmd, String target, int endIndex, String specifiedSyntax) throws BadArgumentException {
         int index = Arrays.asList(cmd).indexOf(target);
         if (index == -1 || endIndex - index == 1) {
@@ -60,10 +90,23 @@ public class Cli {
         return index;
     }
 
+
+    /**
+     * Returns a String from joining a split cmd (sub)array
+     * @param cmd the command split into an array
+     * @param startInclusive the starting index, inclusive
+     * @param endExclusive the end index, exclusive
+     * @return the command string
+     */
     public static String join(String[] cmd, int startInclusive, int endExclusive) {
         return Arrays.stream(cmd, startInclusive, endExclusive).collect(Collectors.joining(" "));
     }
 
+    /**
+     * Parses commands, then dispatches appropriate service function
+     * @param repo the task repo
+     * @param service the task service
+     */
     public static void getCommand(TaskServiceRepo repo, TaskService service) {
         Scanner sc = new Scanner(System.in);
         // Continuously loop CLI until "bye" command is entered
