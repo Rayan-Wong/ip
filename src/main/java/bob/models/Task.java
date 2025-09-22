@@ -3,6 +3,7 @@ package bob.models;
 public class Task {
     private final String desc;
     private boolean done;
+    protected final char DELIM = 0x1F; // for serialisation
 
     public Task(String desc) {
         done = false;
@@ -29,5 +30,9 @@ public class Task {
     @Override
     public String toString() {
         return "[" + (getDone() ? "X" : " ") + "] " + getDesc();
+    }
+
+    public String serialise() {
+        return (done ? "D" : "N") + DELIM + desc;
     }
 }

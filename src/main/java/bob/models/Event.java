@@ -27,4 +27,9 @@ public class Event extends Task {
     public String toString() {
         return "[E]" + super.toString();
     }
+
+    @Override
+    public String serialise() {
+        return "E" + DELIM + super.serialise();
+    }
 }

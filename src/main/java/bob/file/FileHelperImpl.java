@@ -75,13 +75,13 @@ public class FileHelperImpl implements FileHelper {
             for (Task task: tasks) {
                 if (task instanceof ToDo) {
                     ToDo todo = (ToDo) task;
-                    fw.write("T" + DELIM + (todo.getDone() ? "D" : "N") + DELIM + todo.getRawDesc());
+                    fw.write(todo.serialise());
                 } else if (task instanceof Deadline) {
                     Deadline deadline = (Deadline) task;
-                    fw.write(("D" + DELIM + (deadline.getDone() ? "D" : "N") + DELIM + deadline.getRawDesc() + DELIM + deadline.getDeadline()));
+                    fw.write(deadline.serialise());
                 } else if (task instanceof Event) {
                     Event event = (Event) task;
-                    fw.write("E" + DELIM + (event.getDone() ? "D" : "N") + DELIM + event.getRawDesc() + DELIM + event.getFrom() + DELIM + event.getTo());
+                    fw.write(event.serialise());
                 } else {
                     throw new IOException();
                 }
