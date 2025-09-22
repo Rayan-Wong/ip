@@ -1,5 +1,6 @@
 Hello! I'm Bob
 What can I do for you?
+No save data found, creating new file to store it!
 You currently have no tasks!
 Got it. I've added this task:
 [T][ ] borrow book
@@ -16,6 +17,10 @@ Got it. I've added this task:
 Now you have 3 tasks in the list.
 Please specify an end date with /to <end_date>!
 Please specify an end date with /to <end_date>!
+Found these matching tasks!
+[T][ ] borrow book
+[D][ ] return book (by: Sunday)
+No matching tasks found!
 1.[T][ ] borrow book
 2.[D][ ] return book (by: Sunday)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)

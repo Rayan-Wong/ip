@@ -14,4 +14,5 @@ public interface TaskService {
     Task fetchTask(TaskServiceRepo repo, int index) throws RepoException;
     void deleteTask(TaskServiceRepo repo, int index) throws RepoException;
     void saveTasks(TaskServiceRepo repo) throws RepoException;
+    List<Task> findTasks(TaskServiceRepo repo, String keyword);
 }

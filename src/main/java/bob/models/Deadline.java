@@ -21,4 +21,9 @@ public class Deadline extends Task {
     public String toString() {
         return "[D]" + super.toString();
     }
+
+    @Override
+    public String serialise() {
+        return "D" + DELIM + super.serialise();
+    }
 }

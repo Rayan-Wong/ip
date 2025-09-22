@@ -80,4 +80,14 @@ public class TaskServiceRepo {
             throw new BadFileException((e.getMessage()));
         }
     }
+
+    public ArrayList<Task> findAll(String keyword) {
+        ArrayList<Task> result = new ArrayList<>();
+        for (Task task: repo) {
+            if (task.toString().contains(keyword)) {
+                result.add(task);
+            }
+        }
+        return result;
+    }
 }

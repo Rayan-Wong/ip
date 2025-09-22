@@ -43,4 +43,9 @@ public class TaskServiceImpl implements TaskService{
     public void saveTasks(TaskServiceRepo repo) throws BadFileException {
         repo.saveState();
     }
+
+    @Override
+    public List<Task> findTasks(TaskServiceRepo repo, String keyword) {
+        return repo.findAll(keyword).stream().toList();
+    }
 }

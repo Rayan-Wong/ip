@@ -21,6 +21,7 @@ public class Cli {
     public static final String MARK_SYNTAX = "mark <index>";
     public static final String UNMARK_SYNTAX = "unmark <index>";
     public static final String DELETE_SYNTAX = "delete <index>";
+    public static final String FIND_SYNTAX = "find <str>";
 
     public static final String BY_DEADLINE = "Please specify a deadline with /by <deadline>!";
     public static final String START_EVENT = "Please specify a start date with /from <start date>!";
@@ -181,6 +182,21 @@ public class Cli {
                         printDeleteSuccess(task, repo);
                     } catch (RepoException e) {
                         System.out.println(e.getMessage());
+                    }
+                }
+                break;
+
+            case "find":
+                if (checkCommand(cmd, FIND_SYNTAX)) {
+                    String keyword = join(cmd, 1, cmd.length);
+                    List<Task> results = service.findTasks(repo, keyword);
+                    if (results.isEmpty()) {
+                        System.out.println("No matching tasks found!");
+                    } else {
+                        System.out.println("Found these matching tasks!");
+                        for (Task task:results) {
+                            System.out.println(task);
+                        }
                     }
                 }
                 break;

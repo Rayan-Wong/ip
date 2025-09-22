@@ -27,3 +27,4 @@ REM compare the output to the expected output
 FC ACTUAL.TXT EXPECTED.TXT
 del ACTUAL.TXT
 del sources.txt
+del data\Bob.txt

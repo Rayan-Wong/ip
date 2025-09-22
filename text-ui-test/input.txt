@@ -7,6 +7,8 @@ deadline return book
 event project meeting /from Mon 2pm /to 4pm
 event project meeting /from Mon 2pm
 event project meeting
+find book
+find toilet
 list
 mark 1
 mark 4
