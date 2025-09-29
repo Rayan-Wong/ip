@@ -9,6 +9,10 @@ import bob.models.Task;
 import bob.models.ToDo;
 import bob.service.TaskService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -19,16 +23,17 @@ import java.util.List;
  */
 public class Cli {
     public static final String TODO_SYNTAX = "todo <task name>";
-    public static final String DEADLINE_SYNTAX = "deadline <deadline name> /by <deadline>";
-    public static final String EVENT_SYNTAX = "event <event name> /from <from date> /to <to date>";
+    public static final String DEADLINE_SYNTAX = "deadline <deadline name> /by <deadline in yyyy-mm-dd>";
+    public static final String EVENT_SYNTAX = "event <event name> /from <from date in yyyy-mm-dd HH:mm> /to <to date in yyyy-mm-dd HH:mm>";
     public static final String MARK_SYNTAX = "mark <index>";
     public static final String UNMARK_SYNTAX = "unmark <index>";
     public static final String DELETE_SYNTAX = "delete <index>";
     public static final String FIND_SYNTAX = "find <str>";
+    public static final String FIND_BY_DATE_SYNTAX = "findbydate <date in yyyy-mm-dd>";
 
-    public static final String BY_DEADLINE = "Please specify a deadline with /by <deadline>!";
-    public static final String START_EVENT = "Please specify a start date with /from <start date>!";
-    public static final String END_EVENT = "Please specify an end date with /to <end_date>!";
+    public static final String BY_DEADLINE = "Please specify a deadline with /by <deadline in yyyy-mm-dd>!";
+    public static final String START_EVENT = "Please specify a start date with /from <from date in yyyy-mm-dd HH:mm>!";
+    public static final String END_EVENT = "Please specify an end date with /to <to date in yyyy-mm-dd HH:mm>!";
 
     /**
      * Prints a successful task addition
@@ -141,7 +146,7 @@ public class Cli {
                         int byIndex = indexFinder(cmd, "/by", cmd.length, BY_DEADLINE);
 
                         String deadline_name = join(cmd, 1, byIndex);
-                        String due_date = join(cmd, byIndex + 1, cmd.length);
+                        String due_date = cmd[byIndex + 1];
 
                         Deadline deadline = new Deadline(deadline_name, due_date);
                         service.addTask(repo, deadline);
@@ -161,8 +166,8 @@ public class Cli {
                         int fromIndex = indexFinder(cmd, "/from", toIndex, START_EVENT);
 
                         String event_name = join(cmd, 1, fromIndex);
-                        String from = join(cmd, fromIndex + 1, toIndex);
-                        String to = join(cmd, toIndex + 1, cmd.length);
+                        String from = cmd[fromIndex + 1] + "T" + cmd[fromIndex + 2];
+                        String to = cmd[toIndex + 1] + "T" + cmd[toIndex + 2];
                         Event event = new Event(event_name, from, to);
 
                         service.addTask(repo, event);
@@ -171,6 +176,8 @@ public class Cli {
                         System.out.println(e.getMessage());
                     } catch (RepoException e) {
                         System.out.println(e.getMessage());
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid syntax! Correct syntax: " + EVENT_SYNTAX);
                     }
                 }
                 break;
@@ -240,6 +247,44 @@ public class Cli {
                         for (Task task:results) {
                             System.out.println(task);
                         }
+                    }
+                }
+                break;
+
+            case "findbydate":
+                if (checkCommand(cmd, FIND_BY_DATE_SYNTAX)) {
+                    try {
+                        LocalDate date = LocalDate.parse(cmd[1]);
+                        List<Task> results = service.findTasksWithDate(repo, date);
+                        ArrayList<Deadline> deadlines = new ArrayList<>();
+                        ArrayList<Event> events = new ArrayList<>();
+                        for (Task task: results) {
+                            if (task instanceof Deadline) {
+                                deadlines.add((Deadline) task);
+                            } else if (task instanceof Event) {
+                                events.add((Event) task);
+                            }
+                        }
+                        if (deadlines.isEmpty()) {
+                            System.out.println("No deadlines for " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
+                        } else {
+                            System.out.println("The following tasks were found due " + date);
+                            for (Deadline deadline: deadlines) {
+                                System.out.println(deadline);
+                            }
+                        }
+                        if (events.isEmpty()) {
+                            System.out.println("No events within " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
+                        } else {
+                            System.out.println("The following events were found within " + date);
+                            for (Event event: events) {
+                                System.out.println(event);
+                            }
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Invalid syntax! Correct syntax: " + FIND_BY_DATE_SYNTAX);
                     }
                 }
                 break;

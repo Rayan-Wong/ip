@@ -1,5 +1,6 @@
 package bob.file;
 
+import bob.exceptions.BadArgumentException;
 import bob.models.Deadline;
 import bob.models.Event;
 import bob.models.Task;
@@ -32,24 +33,29 @@ public class FileHelperImpl implements FileHelper {
      */
     private ArrayList<Task> deserialise() throws IOException {
         ArrayList<Task> res = new ArrayList<>();
-        Scanner sc = new Scanner(new File(FILE_DIR.toString()));
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            String[] args = line.split(Character.toString(DELIM));
-            Task newTask;
-            // todo: refactor this, it's very hardcoded
-            if (args[0].equals("T") && args.length == 3) {
-                newTask = new ToDo(args[2]);
-            } else if (args[0].equals("D") && args.length == 4) {
-                newTask = new Deadline(args[2], args[3]);
-            } else if (args[0].equals("E") && args.length == 5) {
-                newTask = new Event(args[2], args[3], args[4]);
-            } else {
-                throw new IOException("Error parsing, creating new save file!");
+        try (Scanner sc = new Scanner(new File(FILE_DIR.toString()))) {
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] args = line.split(Character.toString(DELIM));
+                Task newTask;
+                // todo: refactor this, it's very hardcoded
+                try {
+                    if (args[0].equals("T") && args.length == 3) {
+                        newTask = new ToDo(args[2]);
+                    } else if (args[0].equals("D") && args.length == 4) {
+                        newTask = new Deadline(args[2], args[3]);
+                    } else if (args[0].equals("E") && args.length == 5) {
+                        newTask = new Event(args[2], args[3], args[4]);
+                    } else {
+                        throw new IOException("Error parsing, creating new save file!");
+                    }
+                } catch (BadArgumentException e) {
+                    throw new IOException("Error parsing, creating new save file!");
+                }
+                boolean done = args[1].equals("D");
+                newTask.setDone(done);
+                res.add(newTask);
             }
-            boolean done = args[1].equals("D");
-            newTask.setDone(done);
-            res.add(newTask);
         }
         return res;
     }
@@ -60,7 +66,7 @@ public class FileHelperImpl implements FileHelper {
      * @throws IOException if it had issues parsing from deserialise(), making it create a new file
      */
     public ArrayList<Task> load() throws IOException {
-        ArrayList<Task> result;
+        ArrayList<Task> result = new ArrayList<>();
         try {
             createDirectories(FOLDER_DIR);
             if (exists(FILE_DIR)) {
@@ -74,8 +80,8 @@ public class FileHelperImpl implements FileHelper {
                 result = new ArrayList<>();
             }
         } catch (IOException e) {
+            delete(FILE_DIR);
             createFile(FILE_DIR);
-            result = new ArrayList<>();
         }
         return result;
     }

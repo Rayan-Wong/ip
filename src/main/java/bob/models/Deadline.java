@@ -1,19 +1,29 @@
 package bob.models;
 
+import bob.exceptions.BadArgumentException;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * This class represents a deadline, extended from Task
  */
 public class Deadline extends Task {
-    String deadline;
+    LocalDate deadline;
 
     /**
      * Creates a new Deadline object
      * @param desc the task description
      * @param deadline the deadline of this deadline
      */
-    public Deadline(String desc, String deadline) {
+    public Deadline(String desc, String deadline) throws BadArgumentException {
         super(desc);
-        this.deadline = deadline;
+        try {
+            this.deadline = LocalDate.parse(deadline);
+        } catch (DateTimeParseException e) {
+            throw new BadArgumentException("Invalid date syntax!");
+        }
     }
 
     /**
@@ -21,13 +31,13 @@ public class Deadline extends Task {
      */
     @Override
     public String getDesc() {
-        return super.getDesc() + " (by: " + deadline + ")";
+        return super.getDesc() + " (by: " + deadline.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
 
     /**
      * @return the deadline itself
      */
-    public String getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
@@ -38,6 +48,6 @@ public class Deadline extends Task {
 
     @Override
     public String serialise() {
-        return "D" + DELIM + super.serialise();
+        return "D" + DELIM + super.serialise() + DELIM + deadline;
     }
 }
