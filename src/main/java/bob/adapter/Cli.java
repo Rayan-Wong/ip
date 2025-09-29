@@ -87,7 +87,8 @@ public class Cli {
      * @return the index where the command syntax is foumd
      * @throws BadArgumentException if the syntax is invalid
      */
-    public static int indexFinder(String[] cmd, String target, int endIndex, String specifiedSyntax) throws BadArgumentException {
+    public static int indexFinder(String[] cmd, String target, int endIndex, String specifiedSyntax)
+            throws BadArgumentException {
         int index = Arrays.asList(cmd).indexOf(target);
         if (index == -1 || endIndex - index == 1) {
             throw new BadArgumentException(specifiedSyntax);
@@ -269,7 +270,8 @@ public class Cli {
                             System.out.println("No deadlines for " +
                                     date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
                         } else {
-                            System.out.println("The following tasks were found due " + date);
+                            System.out.println("The following tasks were found due " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")));
                             for (Deadline deadline: deadlines) {
                                 System.out.println(deadline);
                             }
@@ -278,7 +280,8 @@ public class Cli {
                             System.out.println("No events within " +
                                     date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
                         } else {
-                            System.out.println("The following events were found within " + date);
+                            System.out.println("The following events were found within " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")));
                             for (Event event: events) {
                                 System.out.println(event);
                             }
