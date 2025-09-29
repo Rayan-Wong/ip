@@ -9,21 +9,21 @@ Invalid syntax!
 Correct Syntax: todo <task name>
 1.[T][ ] borrow book
 Got it. I've added this task:
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Sept 29 2025)
 Now you have 2 tasks in the list.
-Please specify a deadline with /by <deadline>!
+Please specify a deadline with /by <deadline in yyyy-mm-dd>!
 Got it. I've added this task:
-[E][ ] project meeting (from: Mon 2pm to: 4pm)
+[E][ ] project meeting (from: Sept 29 2025 2:00pm to: Sept 29 2025 4:00pm)
 Now you have 3 tasks in the list.
-Please specify an end date with /to <end_date>!
-Please specify an end date with /to <end_date>!
+Please specify an end date with /to <to date in yyyy-mm-dd HH:mm>!
+Please specify an end date with /to <to date in yyyy-mm-dd HH:mm>!
 Found these matching tasks!
 [T][ ] borrow book
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Sept 29 2025)
 No matching tasks found!
 1.[T][ ] borrow book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Sept 29 2025)
+3.[E][ ] project meeting (from: Sept 29 2025 2:00pm to: Sept 29 2025 4:00pm)
 I've marked the following task as done:
 [T][X] borrow book
 Invalid index: 4

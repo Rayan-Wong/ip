@@ -171,6 +171,8 @@ public class Cli {
                         System.out.println(e.getMessage());
                     } catch (RepoException e) {
                         System.out.println(e.getMessage());
+                    } catch (IndexOutOfBoundsException e) {
+                        System.out.println("Invalid syntax! Correct syntax: " + EVENT_SYNTAX);
                     }
                 }
                 break;

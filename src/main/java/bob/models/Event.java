@@ -34,8 +34,8 @@ public class Event extends Task {
      */
     @Override
     public String getDesc() {
-        return super.getDesc() + " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy h:ma"))
-                + " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy h:ma")) + ")";
+        return super.getDesc() + " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy h:mma"))
+                + " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy h:mma")) + ")";
     }
 
 
