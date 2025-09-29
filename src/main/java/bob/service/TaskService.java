@@ -4,6 +4,7 @@ import bob.exceptions.RepoException;
 import bob.repository.TaskServiceRepo;
 import bob.models.Task;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -68,4 +69,13 @@ public interface TaskService {
      * @return a possible empty List of tasks whose description has the substring
      */
     List<Task> findTasks(TaskServiceRepo repo, String keyword);
+
+    /**
+     * Fetches all tasks whose date either is the same as deadline's deadline, or event the date falls
+     * within the datetime range of from and to
+     * @param repo the task's repo
+     * @param date the user supplied date
+     * @return a possible empty List of tasks which fufills the query
+     */
+    List<Task> findTasksWithDate(TaskServiceRepo repo, LocalDate date);
 }

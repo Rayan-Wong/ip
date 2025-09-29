@@ -20,4 +20,6 @@ delete 1
 delete 3
 delete
 blah
+findbydate 2025-09-30
+findbydate 2025-09-29
 bye

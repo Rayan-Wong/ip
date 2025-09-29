@@ -42,15 +42,15 @@ public class Event extends Task {
     /**
      * @return the event's from time
      */
-    public String getFrom() {
-        return from.toString();
+    public LocalDateTime getFrom() {
+        return from;
     }
 
     /**
      * @return the event's end time
      */
-    public String getTo() {
-        return to.toString();
+    public LocalDateTime getTo() {
+        return to;
     }
 
     @Override

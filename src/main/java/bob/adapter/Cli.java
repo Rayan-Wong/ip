@@ -9,6 +9,10 @@ import bob.models.Task;
 import bob.models.ToDo;
 import bob.service.TaskService;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -25,6 +29,7 @@ public class Cli {
     public static final String UNMARK_SYNTAX = "unmark <index>";
     public static final String DELETE_SYNTAX = "delete <index>";
     public static final String FIND_SYNTAX = "find <str>";
+    public static final String FIND_BY_DATE_SYNTAX = "findbydate <date in yyyy-mm-dd>";
 
     public static final String BY_DEADLINE = "Please specify a deadline with /by <deadline in yyyy-mm-dd>!";
     public static final String START_EVENT = "Please specify a start date with /from <from date in yyyy-mm-dd HH:mm>!";
@@ -242,6 +247,44 @@ public class Cli {
                         for (Task task:results) {
                             System.out.println(task);
                         }
+                    }
+                }
+                break;
+
+            case "findbydate":
+                if (checkCommand(cmd, FIND_BY_DATE_SYNTAX)) {
+                    try {
+                        LocalDate date = LocalDate.parse(cmd[1]);
+                        List<Task> results = service.findTasksWithDate(repo, date);
+                        ArrayList<Deadline> deadlines = new ArrayList<>();
+                        ArrayList<Event> events = new ArrayList<>();
+                        for (Task task: results) {
+                            if (task instanceof Deadline) {
+                                deadlines.add((Deadline) task);
+                            } else if (task instanceof Event) {
+                                events.add((Event) task);
+                            }
+                        }
+                        if (deadlines.isEmpty()) {
+                            System.out.println("No deadlines for " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
+                        } else {
+                            System.out.println("The following tasks were found due " + date);
+                            for (Deadline deadline: deadlines) {
+                                System.out.println(deadline);
+                            }
+                        }
+                        if (events.isEmpty()) {
+                            System.out.println("No events within " +
+                                    date.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + " found!");
+                        } else {
+                            System.out.println("The following events were found within " + date);
+                            for (Event event: events) {
+                                System.out.println(event);
+                            }
+                        }
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Invalid syntax! Correct syntax: " + FIND_BY_DATE_SYNTAX);
                     }
                 }
                 break;
