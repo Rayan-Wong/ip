@@ -1,11 +1,17 @@
 package bob.models;
 
+import bob.exceptions.BadArgumentException;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 /**
  * This class represents an Event, extended from Task
  */
 public class Event extends Task {
-    String from;
-    String to;
+    LocalDateTime from;
+    LocalDateTime to;
 
     /**
      * Creates an Event object with description, from and end times
@@ -13,10 +19,14 @@ public class Event extends Task {
      * @param from the start datetime of the event
      * @param to the end datetime of the event
      */
-    public Event(String desc, String from, String to) {
+    public Event(String desc, String from, String to) throws BadArgumentException {
         super(desc);
-        this.from = from;
-        this.to = to;
+        try {
+            this.from = LocalDateTime.parse(from);
+            this.to = LocalDateTime.parse(to);
+        } catch (DateTimeParseException e) {
+            throw new BadArgumentException("Invalid datetime provided!");
+        }
     }
 
     /**
@@ -24,7 +34,8 @@ public class Event extends Task {
      */
     @Override
     public String getDesc() {
-        return super.getDesc() + " (from: " + from + " to: " + to + ")";
+        return super.getDesc() + " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy h:ma"))
+                + " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy h:ma")) + ")";
     }
 
 
@@ -32,14 +43,14 @@ public class Event extends Task {
      * @return the event's from time
      */
     public String getFrom() {
-        return from;
+        return from.toString();
     }
 
     /**
      * @return the event's end time
      */
     public String getTo() {
-        return to;
+        return to.toString();
     }
 
     @Override
@@ -49,6 +60,6 @@ public class Event extends Task {
 
     @Override
     public String serialise() {
-        return "E" + DELIM + super.serialise();
+        return "E" + DELIM + super.serialise() + DELIM + from.toString() + DELIM + to.toString();
     }
 }
